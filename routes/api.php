@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('conversation-log/{user}/{offset}', 'NovaConversationLog\Http\Controllers\ConversationLogController@conversationLog');
 
-Route::get('context-log/{user}/{offset}', 'NovaConversationLog\Http\Controllers\ConversationLogController@contextLog');
+Route::get('context-log/{user}', 'NovaConversationLog\Http\Controllers\ConversationLogController@contextLog');

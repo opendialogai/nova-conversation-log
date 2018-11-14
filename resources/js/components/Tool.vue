@@ -9,31 +9,38 @@
                     <div class="float-right"><b>User</b></div>
                 </div>
 
-                <div class="message mb-6" v-for="(message, index) in messages">
-                    <template v-if="messages[index-1]">
-                        <div class="text-center mb-3">
-                            <div v-if="messages[index-1].conversation_id != message.conversation_id" class="text-70">Conversation: {{ message.conversation_id }}</div>
-                            <div v-if="messages[index-1].scene_id != message.scene_id" class="text-70">Scene: {{ message.scene_id }}</div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="text-center mb-2">
-                            <div class="text-70">Conversation: {{ message.conversation_id }}</div>
-                            <div class="text-70">Scene: {{ message.scene_id }}</div>
-                        </div>
-                    </template>
+                <div class="messages" v-on:scroll="onMessagesScroll">
+                    <div class="message mb-6" v-for="(message, index) in messages">
+                        <template v-if="messages[index-1]">
+                            <div class="text-center mb-3">
+                                <div v-if="messages[index-1].conversation_id != message.conversation_id" class="text-70">Conversation: {{ message.conversation_id }}</div>
+                                <div v-if="messages[index-1].scene_id != message.scene_id" class="text-70">Scene: {{ message.scene_id }}</div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="text-center mb-2">
+                                <div class="text-70">Conversation: {{ message.conversation_id }}</div>
+                                <div class="text-70">Scene: {{ message.scene_id }}</div>
+                            </div>
+                        </template>
 
-                    <template v-if="message.author == 'them'">
-                        <div class="text-left">
-                            <div class="text">{{ message.message }}</div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="text-right">
-                            <div class="text mb-1">{{ message.message }}</div>
-                            <div class="text-70">Matched "{{ message.matched_intent }}" Intent</div>
-                        </div>
-                    </template>
+                        <template v-if="message.author == 'them'">
+                            <div class="text-left them">
+                                <template v-if="message.type == 'image'">
+                                    <div class="text image"><img :src="message.message" /></div>
+                                </template>
+                                <template v-else>
+                                    <div class="text">{{ message.message }}</div>
+                                </template>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="text-right me">
+                                <div class="text mb-1">{{ message.message }}</div>
+                                <div class="text-70">Matched "{{ message.matched_intent }}" Intent</div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </card>
         </div>
@@ -41,6 +48,12 @@
         <div class="px-3 mb-6 w-1/3">
             <card class="p-4">
                 <heading class="mb-6">Context Log</heading>
+
+                <div class="context-log">
+                    <div v-for="row in contextLogs">
+                        <div class="mb-2">{{ row.created_at }}: {{ row.data_type }}: {{ row.value }}</div>
+                    </div>
+                </div>
             </card>
         </div>
     </div>
@@ -50,13 +63,25 @@
 export default {
     data() {
         return {
-            messages: []
+            messagesOffset: 0,
+            messages: [],
+            contextLogs: []
         };
     },
     mounted() {
         this.fetchMessages(this.$route.params.user, 0);
+        this.fetchContextLog(this.$route.params.user);
     },
     methods: {
+        fetchContextLog(user) {
+            window.axios
+                .get(`/admin/conversation-log/context-log/${user}`)
+                .then(response => {
+                    response.data.forEach(row => {
+                        this.contextLogs.push(row);
+                    });
+                });
+        },
         fetchMessages(user, offset) {
             window.axios
                 .get(`/admin/conversation-log/conversation-log/${user}/${offset}`)
@@ -65,18 +90,59 @@ export default {
                         this.messages.push(message);
                     });
                 });
+        },
+        onMessagesScroll(e)
+        {
+            if (this.messages.length == this.messagesOffset + 20) {
+                if (e.target.offsetHeight + e.target.scrollTop == e.target.scrollHeight) {
+                    this.messagesOffset = this.messagesOffset + 20;
+
+                    this.fetchMessages(this.$route.params.user, this.messagesOffset);
+                }
+            }
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.card {
+    height: 75vh;
+
+    .messages {
+        overflow: scroll;
+        height: calc(100% - 85px);
+    }
+
+    .context-log {
+        overflow: scroll;
+        height: calc(100% - 50px);
+    }
+}
+
 .message {
     .text {
-        border-radius: 5px;
-        border: 1px solid rgba(0,0,0,.5);
+        border-radius: 6px;
         display: inline-block;
-        padding: 5px 7px;
+        padding: 7px 10px;
+    }
+
+    .them {
+        .text {
+            background: #eaeaea;
+
+            img {
+                float: left;
+                max-width: 300px;
+            }
+        }
+    }
+
+    .me {
+        .text {
+            background: #4e8cff;
+            color: white;
+        }
     }
 }
 </style>

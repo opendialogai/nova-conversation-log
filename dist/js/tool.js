@@ -90,13 +90,13 @@ Nova.booting(function (Vue, router) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(18)
+  __webpack_require__(3)
 }
 var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(9)
 /* template */
-var __vue_template__ = __webpack_require__(17)
+var __vue_template__ = __webpack_require__(10)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -135,8 +135,46 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 3 */,
-/* 4 */,
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(4);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("1eba3f4e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-68ff5483\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tool.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-68ff5483\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tool.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.card[data-v-68ff5483] {\n  height: 75vh;\n}\n.card .messages[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 85px);\n}\n.card .context-log[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 50px);\n}\n.message .text[data-v-68ff5483] {\n  border-radius: 6px;\n  display: inline-block;\n  padding: 7px 10px;\n}\n.message .them .text[data-v-68ff5483] {\n  background: #eaeaea;\n}\n.message .them .text img[data-v-68ff5483] {\n    float: left;\n    max-width: 300px;\n}\n.message .me .text[data-v-68ff5483] {\n  background: #4e8cff;\n  color: white;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -642,44 +680,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            messages: []
+            messagesOffset: 0,
+            messages: [],
+            contextLogs: []
         };
     },
     mounted: function mounted() {
         this.fetchMessages(this.$route.params.user, 0);
+        this.fetchContextLog(this.$route.params.user);
     },
 
     methods: {
-        fetchMessages: function fetchMessages(user, offset) {
+        fetchContextLog: function fetchContextLog(user) {
             var _this = this;
+
+            window.axios.get("/admin/conversation-log/context-log/" + user).then(function (response) {
+                response.data.forEach(function (row) {
+                    _this.contextLogs.push(row);
+                });
+            });
+        },
+        fetchMessages: function fetchMessages(user, offset) {
+            var _this2 = this;
 
             window.axios.get("/admin/conversation-log/conversation-log/" + user + "/" + offset).then(function (response) {
                 response.data.forEach(function (message) {
-                    _this.messages.push(message);
+                    _this2.messages.push(message);
                 });
             });
+        },
+        onMessagesScroll: function onMessagesScroll(e) {
+            if (this.messages.length == this.messagesOffset + 20) {
+                if (e.target.offsetHeight + e.target.scrollTop == e.target.scrollHeight) {
+                    this.messagesOffset = this.messagesOffset + 20;
+
+                    this.fetchMessages(this.$route.params.user, this.messagesOffset);
+                }
+            }
         }
     }
 });
 
 /***/ }),
-/* 10 */,
-/* 11 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -709,74 +769,94 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._l(_vm.messages, function(message, index) {
-              return _c(
-                "div",
-                { staticClass: "message mb-6" },
-                [
-                  _vm.messages[index - 1]
-                    ? [
-                        _c("div", { staticClass: "text-center mb-3" }, [
-                          _vm.messages[index - 1].conversation_id !=
-                          message.conversation_id
-                            ? _c("div", { staticClass: "text-70" }, [
-                                _vm._v(
-                                  "Conversation: " +
-                                    _vm._s(message.conversation_id)
-                                )
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.messages[index - 1].scene_id != message.scene_id
-                            ? _c("div", { staticClass: "text-70" }, [
-                                _vm._v("Scene: " + _vm._s(message.scene_id))
-                              ])
-                            : _vm._e()
-                        ])
-                      ]
-                    : [
-                        _c("div", { staticClass: "text-center mb-2" }, [
-                          _c("div", { staticClass: "text-70" }, [
-                            _vm._v(
-                              "Conversation: " + _vm._s(message.conversation_id)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-70" }, [
-                            _vm._v("Scene: " + _vm._s(message.scene_id))
+            _c(
+              "div",
+              { staticClass: "messages", on: { scroll: _vm.onMessagesScroll } },
+              _vm._l(_vm.messages, function(message, index) {
+                return _c(
+                  "div",
+                  { staticClass: "message mb-6" },
+                  [
+                    _vm.messages[index - 1]
+                      ? [
+                          _c("div", { staticClass: "text-center mb-3" }, [
+                            _vm.messages[index - 1].conversation_id !=
+                            message.conversation_id
+                              ? _c("div", { staticClass: "text-70" }, [
+                                  _vm._v(
+                                    "Conversation: " +
+                                      _vm._s(message.conversation_id)
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.messages[index - 1].scene_id != message.scene_id
+                              ? _c("div", { staticClass: "text-70" }, [
+                                  _vm._v("Scene: " + _vm._s(message.scene_id))
+                                ])
+                              : _vm._e()
                           ])
-                        ])
-                      ],
-                  _vm._v(" "),
-                  message.author == "them"
-                    ? [
-                        _c("div", { staticClass: "text-left" }, [
-                          _c("div", { staticClass: "text" }, [
-                            _vm._v(_vm._s(message.message))
+                        ]
+                      : [
+                          _c("div", { staticClass: "text-center mb-2" }, [
+                            _c("div", { staticClass: "text-70" }, [
+                              _vm._v(
+                                "Conversation: " +
+                                  _vm._s(message.conversation_id)
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-70" }, [
+                              _vm._v("Scene: " + _vm._s(message.scene_id))
+                            ])
                           ])
-                        ])
-                      ]
-                    : [
-                        _c("div", { staticClass: "text-right" }, [
-                          _c("div", { staticClass: "text mb-1" }, [
-                            _vm._v(_vm._s(message.message))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-70" }, [
-                            _vm._v(
-                              'Matched "' +
-                                _vm._s(message.matched_intent) +
-                                '" Intent'
-                            )
+                        ],
+                    _vm._v(" "),
+                    message.author == "them"
+                      ? [
+                          _c(
+                            "div",
+                            { staticClass: "text-left them" },
+                            [
+                              message.type == "image"
+                                ? [
+                                    _c("div", { staticClass: "text image" }, [
+                                      _c("img", {
+                                        attrs: { src: message.message }
+                                      })
+                                    ])
+                                  ]
+                                : [
+                                    _c("div", { staticClass: "text" }, [
+                                      _vm._v(_vm._s(message.message))
+                                    ])
+                                  ]
+                            ],
+                            2
+                          )
+                        ]
+                      : [
+                          _c("div", { staticClass: "text-right me" }, [
+                            _c("div", { staticClass: "text mb-1" }, [
+                              _vm._v(_vm._s(message.message))
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-70" }, [
+                              _vm._v(
+                                'Matched "' +
+                                  _vm._s(message.matched_intent) +
+                                  '" Intent'
+                              )
+                            ])
                           ])
-                        ])
-                      ]
-                ],
-                2
-              )
-            })
+                        ]
+                  ],
+                  2
+                )
+              })
+            )
           ],
-          2
+          1
         )
       ],
       1
@@ -789,7 +869,27 @@ var render = function() {
         _c(
           "card",
           { staticClass: "p-4" },
-          [_c("heading", { staticClass: "mb-6" }, [_vm._v("Context Log")])],
+          [
+            _c("heading", { staticClass: "mb-6" }, [_vm._v("Context Log")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "context-log" },
+              _vm._l(_vm.contextLogs, function(row) {
+                return _c("div", [
+                  _c("div", { staticClass: "mb-2" }, [
+                    _vm._v(
+                      _vm._s(row.created_at) +
+                        ": " +
+                        _vm._s(row.data_type) +
+                        ": " +
+                        _vm._s(row.value)
+                    )
+                  ])
+                ])
+              })
+            )
+          ],
           1
         )
       ],
@@ -808,44 +908,10 @@ if (false) {
 }
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 11 */
+/***/ (function(module, exports) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(19);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("1eba3f4e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-68ff5483\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tool.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-68ff5483\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Tool.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.message .text[data-v-68ff5483] {\n  border-radius: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  padding: 5px 7px;\n}\n", ""]);
-
-// exports
-
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

@@ -19,6 +19,7 @@ class ConversationLogController
     public function contextLog($user)
     {
         return UserStore::where('user_id', $user)
+            ->orderBy('created_at')
             ->get();
     }
 }
