@@ -41,6 +41,12 @@
                             </div>
                         </template>
                     </div>
+
+                    <div class="loading-indicator" v-if="loading">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </card>
         </div>
@@ -63,6 +69,7 @@
 export default {
     data() {
         return {
+            loading: false,
             messagesOffset: 0,
             messages: [],
             contextLogs: []
@@ -83,9 +90,13 @@ export default {
                 });
         },
         fetchMessages(user, offset) {
+            this.loading = true;
+
             window.axios
                 .get(`/admin/conversation-log/conversation-log/${user}/${offset}`)
                 .then(response => {
+                    this.loading = false;
+
                     response.data.forEach(message => {
                         this.messages.push(message);
                     });
@@ -93,9 +104,9 @@ export default {
         },
         onMessagesScroll(e)
         {
-            if (this.messages.length == this.messagesOffset + 20) {
+            if (!this.loading && (this.messages.length == this.messagesOffset + 100)) {
                 if (e.target.offsetHeight + e.target.scrollTop == e.target.scrollHeight) {
-                    this.messagesOffset = this.messagesOffset + 20;
+                    this.messagesOffset = this.messagesOffset + 100;
 
                     this.fetchMessages(this.$route.params.user, this.messagesOffset);
                 }
@@ -143,6 +154,43 @@ export default {
             background: #4e8cff;
             color: white;
         }
+    }
+}
+
+.loading-indicator {
+    text-align: center;
+    padding: 20px 0;
+
+    span {
+        display: inline-block;
+        background-color: #B6B5BA;
+        width: 11px;
+        height: 11px;
+        border-radius: 100%;
+        margin-right: 4px;
+        animation: bob 2s infinite;
+    }
+}
+
+/* SAFARI GLITCH */
+.loading-indicator span:nth-child(1) {
+    animation-delay: -1s;
+}
+.loading-indicator span:nth-child(2) {
+    animation-delay: -0.85s;
+}
+.loading-indicator span:nth-child(3) {
+    animation-delay: -0.7s;
+}
+
+@keyframes bob {
+    10% {
+        transform: translateY(-10px);
+        background-color: #9E9DA2;
+    }
+    50% {
+        transform: translateY(0);
+        background-color: #B6B5BA;
     }
 }
 </style>
