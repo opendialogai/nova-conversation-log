@@ -32,12 +32,15 @@
                                 <template v-else>
                                     <div class="text">{{ message.message }}</div>
                                 </template>
+
+                                <div class="time text-xs text-70 mt-1">{{ formatDate(message.created_at) }}</div>
                             </div>
                         </template>
                         <template v-else>
                             <div class="text-right me">
                                 <div class="text mb-1">{{ message.message }}</div>
-                                <div class="text-70">Matched "{{ message.matched_intent }}" Intent</div>
+                                <div class="time text-xs text-70 mt-1">{{ formatDate(message.created_at) }}</div>
+                                <div class="text-70 mt-1">Matched "{{ message.matched_intent }}" Intent</div>
                             </div>
                         </template>
                     </div>
@@ -60,6 +63,9 @@
 </template>
 
 <script>
+import format from "date-fns/format";
+import parse from "date-fns/parse";
+
 export default {
     data() {
         return {
@@ -100,6 +106,9 @@ export default {
                     this.fetchMessages(this.$route.params.user, this.messagesOffset);
                 }
             }
+        },
+        formatDate(date) {
+            return format(parse(date), "d MMM YYYY - HH:mm:ss");
         }
     }
 }
