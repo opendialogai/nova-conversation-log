@@ -11,7 +11,7 @@ class ConversationLogController
     {
         return Message::where('user_id', $user)
             ->offset($offset)
-            ->limit(20)
+            ->limit(100)
             ->orderBy('microtime')
             ->get();
     }
