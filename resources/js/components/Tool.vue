@@ -36,7 +36,41 @@
                         <template v-if="message.author == 'them'">
                             <div class="text-left them">
                                 <template v-if="message.type == 'image'">
-                                    <div class="text image"><img :src="message.message" /></div>
+                                    <div class="text">
+                                        <template v-if="message.data.img_link">
+                                            <a :href="message.data.img_link"><img :src="message.data.img_src" /></a>
+                                        </template>
+                                        <template v-else>
+                                            <img :src="message.data.img_src" />
+                                        </template>
+                                    </div>
+                                </template>
+                                <template v-else-if="message.type == 'action'">
+                                    <div class="text">
+                                        <div>{{ message.message }}</div>
+                                        <button v-for="button in message.data.buttons" class="btn btn-default btn-primary mt-1">{{button.text}}</button>
+                                    </div>
+                                </template>
+                                <template v-else-if="message.type == 'list'">
+                                    <div class="text">
+                                        <div class="list-element" v-for="element in message.data.elements">
+                                            <template v-if="element.image">
+                                                <div class="list-image float-right mb-1 ml-2"><img :src="element.image" /></div>
+                                            </template>
+
+                                            <div class="list-title font-bold mb-1">{{ element.title }}</div>
+                                            <div class="list-subtitle mb-1">{{ element.subtitle }}</div>
+
+                                            <div class="list-button">
+                                                <template v-if="element.button.url">
+                                                    <a class="btn btn-default btn-primary mt-1" :href="element.button.url" :target="element.button.link_new_tab ? '_blank' : '_parent'">{{ element.button.text }}</a>
+                                                </template>
+                                                <template v-else-if="element.button.callback">
+                                                    <button class="btn btn-default btn-primary mt-1">{{ element.button.text }}</button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </template>
                                 <template v-else>
                                     <div class="text">{{ message.message }}</div>
@@ -179,6 +213,25 @@ export default {
         .text {
             background: #4e8cff;
             color: white;
+        }
+    }
+
+    .list-element {
+        display: inline-block;
+        width: 100%;
+        min-width: 150px;
+        border-bottom: 1px solid #999;
+        margin-bottom: .5rem;
+        padding-bottom: .25rem;
+
+        &:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        img {
+            max-width: 100px !important;
         }
     }
 }
