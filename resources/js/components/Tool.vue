@@ -2,7 +2,14 @@
     <div class="flex flex-wrap -mx-3 mb-3">
         <div class="px-3 mb-6 w-2/3">
             <card class="p-4">
-                <heading class="mb-6">Conversation Log</heading>
+                <div class="clearfix mb-6">
+                    <heading class="float-left">Conversation Log</heading>
+
+                    <div class="show-extra-info float-right">
+                        Show extra information:
+                        <toggle-button v-model="showExtraInfo" :labels="{checked: 'on', unchecked: 'off'}" />
+                    </div>
+                </div>
 
                 <div class="clearfix mb-4">
                     <div class="float-left"><b>Bot</b></div>
@@ -11,17 +18,19 @@
 
                 <div class="messages" v-on:scroll="onMessagesScroll">
                     <div class="message mb-6" v-for="(message, index) in messages">
-                        <template v-if="messages[index-1]">
-                            <div class="text-center mb-3">
-                                <div v-if="messages[index-1].conversation_id != message.conversation_id" class="text-70">Conversation: {{ message.conversation_id }}</div>
-                                <div v-if="messages[index-1].scene_id != message.scene_id" class="text-70">Scene: {{ message.scene_id }}</div>
-                            </div>
-                        </template>
-                        <template v-else>
-                            <div class="text-center mb-2">
-                                <div class="text-70">Conversation: {{ message.conversation_id }}</div>
-                                <div class="text-70">Scene: {{ message.scene_id }}</div>
-                            </div>
+                        <template v-if="showExtraInfo">
+                            <template v-if="messages[index-1]">
+                                <div class="text-center mb-3">
+                                    <div v-if="messages[index-1].conversation_id != message.conversation_id" class="text-70">Conversation: {{ message.conversation_id }}</div>
+                                    <div v-if="messages[index-1].scene_id != message.scene_id" class="text-70">Scene: {{ message.scene_id }}</div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="text-center mb-2">
+                                    <div class="text-70">Conversation: {{ message.conversation_id }}</div>
+                                    <div class="text-70">Scene: {{ message.scene_id }}</div>
+                                </div>
+                            </template>
                         </template>
 
                         <template v-if="message.author == 'them'">
@@ -40,7 +49,9 @@
                             <div class="text-right me">
                                 <div class="text mb-1">{{ message.message }}</div>
                                 <div class="time text-xs text-70 mt-1">{{ formatDate(message.created_at) }}</div>
-                                <div class="text-70 mt-1">Matched "{{ message.matched_intent }}" Intent</div>
+                                <div v-if="showExtraInfo" class="text-70 mt-1">
+                                    Matched "{{ message.matched_intent }}" Intent
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -72,9 +83,15 @@
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 
+import ToggleButton from "vue-js-toggle-button/src/Button";
+
 export default {
+    components: {
+        ToggleButton
+    },
     data() {
         return {
+            showExtraInfo: false,
             loading: false,
             messagesOffset: 0,
             messages: [],
