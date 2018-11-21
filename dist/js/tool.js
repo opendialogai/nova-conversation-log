@@ -1165,7 +1165,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            showExtraInfo: true,
+            showExtraInfo: false,
             loading: false,
             messagesOffset: 0,
             messages: [],
@@ -2510,7 +2510,7 @@ var render = function() {
                 { staticClass: "show-extra-info float-right" },
                 [
                   _vm._v(
-                    "\n                    Show extra informations:\n                    "
+                    "\n                    Show extra information:\n                    "
                   ),
                   _c("toggle-button", {
                     attrs: { labels: { checked: "on", unchecked: "off" } },

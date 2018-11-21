@@ -6,7 +6,7 @@
                     <heading class="float-left">Conversation Log</heading>
 
                     <div class="show-extra-info float-right">
-                        Show extra informations:
+                        Show extra information:
                         <toggle-button v-model="showExtraInfo" :labels="{checked: 'on', unchecked: 'off'}" />
                     </div>
                 </div>
@@ -91,7 +91,7 @@ export default {
     },
     data() {
         return {
-            showExtraInfo: true,
+            showExtraInfo: false,
             loading: false,
             messagesOffset: 0,
             messages: [],
