@@ -272,6 +272,16 @@
 
 .open-live-chat {
     cursor: pointer;
+    width: 165px;
+    background-color: lightgreen;
+    margin: auto;
+    height: 2.25rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    line-height: 2.25rem;
+    border-radius: .5rem;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
 }
 
 .open-live-chat:hover {
