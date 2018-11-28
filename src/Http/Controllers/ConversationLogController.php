@@ -4,6 +4,7 @@ namespace NovaConversationLog\Http\Controllers;
 
 use Webchat\Message;
 use Webchat\UserStore;
+use Webchat\ChatbotUser;
 
 class ConversationLogController
 {
@@ -21,5 +22,14 @@ class ConversationLogController
         return UserStore::where('user_id', $user)
             ->orderBy('created_at')
             ->get();
+    }
+
+    public function userIsInHandoverMode($user)
+    {
+        $inHandOverMode = ChatbotUser::where('user_id', $user)
+            ->first()
+            ->isInHandoverMode();
+
+        return $inHandOverMode ? 'true' : 'false';
     }
 }

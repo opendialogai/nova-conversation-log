@@ -11,6 +11,12 @@
                     </div>
                 </div>
 
+                <div class="clearfix mb-6" v-if="userInHandOverMode">
+                    <div @click="openLiveChat" class="open-live-chat">
+                        Open Live Chat
+                    </div>
+                </div>
+
                 <div class="clearfix mb-4">
                     <div class="float-left"><b>Bot</b></div>
                     <div class="float-right"><b>User</b></div>
@@ -114,12 +120,12 @@
 </template>
 
 <script>
-import format from "date-fns/format";
-import parse from "date-fns/parse";
+    import format from "date-fns/format";
+    import parse from "date-fns/parse";
 
-import ToggleButton from "vue-js-toggle-button/src/Button";
+    import ToggleButton from "vue-js-toggle-button/src/Button";
 
-export default {
+    export default {
     components: {
         ToggleButton
     },
@@ -129,12 +135,14 @@ export default {
             loading: false,
             messagesOffset: 0,
             messages: [],
-            contextLogs: []
+            contextLogs: [],
+            userInHandOverMode: false
         };
     },
     mounted() {
         this.fetchMessages(this.$route.params.user, 0);
         this.fetchContextLog(this.$route.params.user);
+        this.isUserInHandOverMode(this.$route.params.user)
     },
     methods: {
         fetchContextLog(user) {
@@ -171,6 +179,17 @@ export default {
         },
         formatDate(date) {
             return format(parse(date), "d MMM YYYY - HH:mm:ss");
+        },
+        openLiveChat() {
+            window.open("/chat/" + this.$route.params.user, 'newwindow', 'width=500,height=500');
+        },
+        isUserInHandOverMode(user) {
+            window.axios
+                .get(`/admin/conversation-log/is-in-hand-over-mode/${user}`)
+                .then(response => {
+                    console.log(response.data);
+                    this.userInHandOverMode = response.data == true;
+                });
         }
     }
 }
@@ -249,6 +268,14 @@ export default {
         margin-right: 4px;
         animation: bob 2s infinite;
     }
+}
+
+.open-live-chat {
+    cursor: pointer;
+}
+
+.open-live-chat:hover {
+    text-decoration: underline;
 }
 
 /* SAFARI GLITCH */
