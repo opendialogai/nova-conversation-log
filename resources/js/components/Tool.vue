@@ -11,6 +11,16 @@
                     </div>
                 </div>
 
+                <div class="clearfix mb-6">
+                    <div>
+                        <a href="/chat/{{this.$route.params.user}}"
+                           onclick="window.open('/chat/{{this.$route.params.user}}',
+                         'newwindow',
+                         'width=500,height=500');
+                         return false;">Live Chat</a>
+                    </div>
+                </div>
+
                 <div class="clearfix mb-4">
                     <div class="float-left"><b>Bot</b></div>
                     <div class="float-right"><b>User</b></div>
@@ -114,12 +124,12 @@
 </template>
 
 <script>
-import format from "date-fns/format";
-import parse from "date-fns/parse";
+    import format from "date-fns/format";
+    import parse from "date-fns/parse";
 
-import ToggleButton from "vue-js-toggle-button/src/Button";
+    import ToggleButton from "vue-js-toggle-button/src/Button";
 
-export default {
+    export default {
     components: {
         ToggleButton
     },
