@@ -14,7 +14,13 @@ class ConversationLogController
             ->offset($offset)
             ->limit(100)
             ->orderBy('microtime')
-            ->get();
+            ->get()
+            ->each(function ($message) {
+                if ($message->user) {
+                    $message->user = unserialize($message->user);
+                }
+                return $message;
+            });
     }
 
     public function contextLog($user)

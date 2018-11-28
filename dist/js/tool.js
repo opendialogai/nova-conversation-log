@@ -1022,7 +1022,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.card[data-v-68ff5483] {\n  height: 75vh;\n}\n.card .messages[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 85px);\n}\n.card .context-log[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 50px);\n}\n.message .text[data-v-68ff5483] {\n  border-radius: 6px;\n  display: inline-block;\n  padding: 7px 10px;\n}\n.message .them .text[data-v-68ff5483] {\n  background: #eaeaea;\n}\n.message .them .text img[data-v-68ff5483] {\n    float: left;\n    max-width: 300px;\n}\n.message .me .text[data-v-68ff5483] {\n  background: #4e8cff;\n  color: white;\n}\n.message .list-element[data-v-68ff5483] {\n  display: inline-block;\n  width: 100%;\n  min-width: 150px;\n  border-bottom: 1px solid #999;\n  margin-bottom: .5rem;\n  padding-bottom: .25rem;\n}\n.message .list-element[data-v-68ff5483]:last-child {\n    border-bottom: none;\n    margin-bottom: 0;\n    padding-bottom: 0;\n}\n.message .list-element img[data-v-68ff5483] {\n    max-width: 100px !important;\n}\n.loading-indicator[data-v-68ff5483] {\n  text-align: center;\n  padding: 20px 0;\n}\n.loading-indicator span[data-v-68ff5483] {\n    display: inline-block;\n    background-color: #B6B5BA;\n    width: 11px;\n    height: 11px;\n    border-radius: 100%;\n    margin-right: 4px;\n    -webkit-animation: bob-data-v-68ff5483 2s infinite;\n            animation: bob-data-v-68ff5483 2s infinite;\n}\n.open-live-chat[data-v-68ff5483] {\n  cursor: pointer;\n}\n.open-live-chat[data-v-68ff5483]:hover {\n  text-decoration: underline;\n}\n\n/* SAFARI GLITCH */\n.loading-indicator span[data-v-68ff5483]:nth-child(1) {\n  -webkit-animation-delay: -1s;\n          animation-delay: -1s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(2) {\n  -webkit-animation-delay: -0.85s;\n          animation-delay: -0.85s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(3) {\n  -webkit-animation-delay: -0.7s;\n          animation-delay: -0.7s;\n}\n@-webkit-keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n@keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n", ""]);
+exports.push([module.i, "\n.card[data-v-68ff5483] {\n  height: 75vh;\n}\n.card .messages[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 130px);\n}\n.card .context-log[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 50px);\n}\n.message .text[data-v-68ff5483] {\n  border-radius: 6px;\n  display: inline-block;\n  padding: 7px 10px;\n}\n.message .them .text[data-v-68ff5483] {\n  background: #eaeaea;\n  max-width: 75%;\n}\n.message .them .text img[data-v-68ff5483] {\n    float: left;\n    max-width: 300px;\n}\n.message .me .text[data-v-68ff5483] {\n  background: #4e8cff;\n  color: white;\n}\n.message .list-element[data-v-68ff5483] {\n  display: inline-block;\n  width: 100%;\n  min-width: 150px;\n  border-bottom: 1px solid #999;\n  margin-bottom: .5rem;\n  padding-bottom: .25rem;\n}\n.message .list-element[data-v-68ff5483]:last-child {\n    border-bottom: none;\n    margin-bottom: 0;\n    padding-bottom: 0;\n}\n.message .list-element img[data-v-68ff5483] {\n    max-width: 100px !important;\n}\n.loading-indicator[data-v-68ff5483] {\n  text-align: center;\n  padding: 20px 0;\n}\n.loading-indicator span[data-v-68ff5483] {\n    display: inline-block;\n    background-color: #B6B5BA;\n    width: 11px;\n    height: 11px;\n    border-radius: 100%;\n    margin-right: 4px;\n    -webkit-animation: bob-data-v-68ff5483 2s infinite;\n            animation: bob-data-v-68ff5483 2s infinite;\n}\n.live-chat[data-v-68ff5483] {\n  width: 165px;\n  margin: auto;\n  height: 2.25rem;\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n  line-height: 2.25rem;\n  border-radius: .5rem;\n  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n}\n.live-chat#open[data-v-68ff5483] {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n.live-chat#closed[data-v-68ff5483] {\n  background-color: palevioletred;\n}\n.open-live-chat[data-v-68ff5483]:hover {\n  text-decoration: underline;\n}\n.user-name[data-v-68ff5483] {\n  color: grey;\n  font-size: smaller;\n}\n\n/* SAFARI GLITCH */\n.loading-indicator span[data-v-68ff5483]:nth-child(1) {\n  -webkit-animation-delay: -1s;\n          animation-delay: -1s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(2) {\n  -webkit-animation-delay: -0.85s;\n          animation-delay: -0.85s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(3) {\n  -webkit-animation-delay: -0.7s;\n          animation-delay: -0.7s;\n}\n@-webkit-keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n@keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n", ""]);
 
 // exports
 
@@ -1193,6 +1193,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1210,10 +1216,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             messagesOffset: 0,
             messages: [],
             contextLogs: [],
-            userInHandOverMode: false
+            userInHandOverMode: false,
+            userId: null
         };
     },
     mounted: function mounted() {
+        this.userId = this.$route.params.user;
         this.fetchMessages(this.$route.params.user, 0);
         this.fetchContextLog(this.$route.params.user);
         this.isUserInHandOverMode(this.$route.params.user);
@@ -1238,6 +1246,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.loading = false;
 
                 response.data.forEach(function (message) {
+                    if (message.author !== _this2.userId) {
+                        message.author = 'them';
+                    }
+                    console.log(message.user);
                     _this2.messages.push(message);
                 });
             });
@@ -1261,7 +1273,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this3 = this;
 
             window.axios.get("/admin/conversation-log/is-in-hand-over-mode/" + user).then(function (response) {
-                console.log(response.data);
                 _this3.userInHandOverMode = response.data == true;
             });
         }
@@ -2587,7 +2598,8 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "open-live-chat",
+                    staticClass: "live-chat",
+                    attrs: { id: "open" },
                     on: { click: _vm.openLiveChat }
                   },
                   [
@@ -2597,7 +2609,17 @@ var render = function() {
                   ]
                 )
               ])
-            : _vm._e(),
+            : _c("div", { staticClass: "clearfix mb-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "live-chat", attrs: { id: "closed" } },
+                  [
+                    _vm._v(
+                      "\n                    User Not Online\n                "
+                    )
+                  ]
+                )
+              ]),
           _vm._v(" "),
           _c("div", { staticClass: "clearfix mb-4" }, [
             _c("div", { staticClass: "float-left" }, [
@@ -2666,6 +2688,12 @@ var render = function() {
                             "div",
                             { staticClass: "text-left them" },
                             [
+                              message.user && message.user.name
+                                ? _c("div", { staticClass: "user-name" }, [
+                                    _vm._v(_vm._s(message.user.name))
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
                               message.type == "image"
                                 ? [
                                     _c(

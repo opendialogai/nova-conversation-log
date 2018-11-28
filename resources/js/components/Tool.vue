@@ -12,8 +12,13 @@
                 </div>
 
                 <div class="clearfix mb-6" v-if="userInHandOverMode">
-                    <div @click="openLiveChat" class="open-live-chat">
+                    <div @click="openLiveChat" id="open" class="live-chat">
                         Open Live Chat
+                    </div>
+                </div>
+                <div class="clearfix mb-6" v-else>
+                    <div id="closed" class="live-chat">
+                        User Not Online
                     </div>
                 </div>
 
@@ -41,6 +46,7 @@
 
                         <template v-if="message.author == 'them'">
                             <div class="text-left them">
+                                <div class="user-name" v-if="message.user && message.user.name">{{message.user.name}}</div>
                                 <template v-if="message.type == 'image'">
                                     <div class="text">
                                         <template v-if="message.data.img_link">
@@ -136,10 +142,12 @@
             messagesOffset: 0,
             messages: [],
             contextLogs: [],
-            userInHandOverMode: false
+            userInHandOverMode: false,
+            userId: null
         };
     },
     mounted() {
+        this.userId = this.$route.params.user;
         this.fetchMessages(this.$route.params.user, 0);
         this.fetchContextLog(this.$route.params.user);
         this.isUserInHandOverMode(this.$route.params.user)
@@ -163,6 +171,10 @@
                     this.loading = false;
 
                     response.data.forEach(message => {
+                        if (message.author !== this.userId) {
+                            message.author = 'them';
+                        }
+                        console.log(message.user);
                         this.messages.push(message);
                     });
                 });
@@ -187,7 +199,6 @@
             window.axios
                 .get(`/admin/conversation-log/is-in-hand-over-mode/${user}`)
                 .then(response => {
-                    console.log(response.data);
                     this.userInHandOverMode = response.data == true;
                 });
         }
@@ -201,7 +212,7 @@
 
     .messages {
         overflow: scroll;
-        height: calc(100% - 85px);
+        height: calc(100% - 130px);
     }
 
     .context-log {
@@ -220,6 +231,7 @@
     .them {
         .text {
             background: #eaeaea;
+            max-width: 75%;
 
             img {
                 float: left;
@@ -270,10 +282,8 @@
     }
 }
 
-.open-live-chat {
-    cursor: pointer;
+.live-chat {
     width: 165px;
-    background-color: lightgreen;
     margin: auto;
     height: 2.25rem;
     padding-left: 1.5rem;
@@ -284,8 +294,23 @@
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
 }
 
+.live-chat#open {
+    background-color: lightgreen;
+    cursor: pointer;
+}
+
+.live-chat#closed {
+    background-color: palevioletred;
+}
+
+
 .open-live-chat:hover {
     text-decoration: underline;
+}
+
+.user-name {
+    color: grey;
+    font-size: smaller;
 }
 
 /* SAFARI GLITCH */
