@@ -174,7 +174,6 @@
                         if (message.author !== this.userId) {
                             message.author = 'them';
                         }
-                        console.log(message.user);
                         this.messages.push(message);
                     });
                 });
