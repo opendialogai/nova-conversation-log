@@ -1249,7 +1249,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if (message.author !== _this2.userId) {
                         message.author = 'them';
                     }
-                    console.log(message.user);
                     _this2.messages.push(message);
                 });
             });
