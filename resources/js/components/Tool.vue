@@ -85,7 +85,7 @@
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <div class="text">{{ message.message }}</div>
+                                    <div class="text" v-html="message.message"></div>
                                 </template>
 
                                 <div class="time text-xs text-70 mt-1">{{ formatDate(message.created_at) }}</div>
