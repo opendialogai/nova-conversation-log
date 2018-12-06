@@ -189,7 +189,7 @@
             }
         },
         formatDate(date) {
-            return format(parse(date), "d MMM YYYY - HH:mm:ss");
+            return format(parse(date), "DD MMM YYYY - HH:mm:ss");
         },
         openLiveChat() {
             window.open("/chat/" + this.$route.params.user, 'newwindow', 'width=500,height=500');
