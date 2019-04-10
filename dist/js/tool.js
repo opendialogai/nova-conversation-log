@@ -67,6 +67,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var getTimezoneOffsetInMilliseconds = __webpack_require__(16)
 var isDate = __webpack_require__(5)
 
 var MILLISECONDS_IN_HOUR = 3600000
@@ -176,14 +177,25 @@ function parse (argument, dirtyOptions) {
     }
 
     if (dateStrings.timezone) {
-      offset = parseTimezone(dateStrings.timezone)
+      offset = parseTimezone(dateStrings.timezone) * MILLISECONDS_IN_MINUTE
     } else {
-      // get offset accurate to hour in timezones that change offset
-      offset = new Date(timestamp + time).getTimezoneOffset()
-      offset = new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE).getTimezoneOffset()
+      var fullTime = timestamp + time
+      var fullTimeDate = new Date(fullTime)
+
+      offset = getTimezoneOffsetInMilliseconds(fullTimeDate)
+
+      // Adjust time when it's coming from DST
+      var fullTimeDateNextDay = new Date(fullTime)
+      fullTimeDateNextDay.setDate(fullTimeDate.getDate() + 1)
+      var offsetDiff =
+        getTimezoneOffsetInMilliseconds(fullTimeDateNextDay) -
+        getTimezoneOffsetInMilliseconds(fullTimeDate)
+      if (offsetDiff > 0) {
+        offset += offsetDiff
+      }
     }
 
-    return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)
+    return new Date(timestamp + time + offset)
   } else {
     return new Date(argument)
   }
@@ -393,7 +405,7 @@ module.exports = parse
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(20)
+var startOfWeek = __webpack_require__(21)
 
 /**
  * @category ISO Week Helpers
@@ -921,7 +933,7 @@ module.exports = getISOYear
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(8);
-module.exports = __webpack_require__(33);
+module.exports = __webpack_require__(34);
 
 
 /***/ }),
@@ -949,7 +961,7 @@ var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(13)
 /* template */
-var __vue_template__ = __webpack_require__(32)
+var __vue_template__ = __webpack_require__(33)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1022,7 +1034,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.card[data-v-68ff5483] {\n  height: 75vh;\n}\n.card .messages[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 130px);\n}\n.card .context-log[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 50px);\n}\n.message .text[data-v-68ff5483] {\n  border-radius: 6px;\n  display: inline-block;\n  padding: 7px 10px;\n}\n.message .them .text[data-v-68ff5483] {\n  background: #eaeaea;\n  max-width: 75%;\n}\n.message .them .text img[data-v-68ff5483] {\n    float: left;\n    max-width: 300px;\n}\n.message .me .text[data-v-68ff5483] {\n  background: #4e8cff;\n  color: white;\n}\n.message .list-element[data-v-68ff5483] {\n  display: inline-block;\n  width: 100%;\n  min-width: 150px;\n  border-bottom: 1px solid #999;\n  margin-bottom: .5rem;\n  padding-bottom: .25rem;\n}\n.message .list-element[data-v-68ff5483]:last-child {\n    border-bottom: none;\n    margin-bottom: 0;\n    padding-bottom: 0;\n}\n.message .list-element img[data-v-68ff5483] {\n    max-width: 100px !important;\n}\n.loading-indicator[data-v-68ff5483] {\n  text-align: center;\n  padding: 20px 0;\n}\n.loading-indicator span[data-v-68ff5483] {\n    display: inline-block;\n    background-color: #B6B5BA;\n    width: 11px;\n    height: 11px;\n    border-radius: 100%;\n    margin-right: 4px;\n    -webkit-animation: bob-data-v-68ff5483 2s infinite;\n            animation: bob-data-v-68ff5483 2s infinite;\n}\n.live-chat[data-v-68ff5483] {\n  width: 165px;\n  margin: auto;\n  height: 2.25rem;\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n  line-height: 2.25rem;\n  border-radius: .5rem;\n  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n}\n.live-chat#open[data-v-68ff5483] {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n.live-chat#closed[data-v-68ff5483] {\n  background-color: palevioletred;\n}\n.open-live-chat[data-v-68ff5483]:hover {\n  text-decoration: underline;\n}\n.user-name[data-v-68ff5483] {\n  color: grey;\n  font-size: smaller;\n}\n\n/* SAFARI GLITCH */\n.loading-indicator span[data-v-68ff5483]:nth-child(1) {\n  -webkit-animation-delay: -1s;\n          animation-delay: -1s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(2) {\n  -webkit-animation-delay: -0.85s;\n          animation-delay: -0.85s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(3) {\n  -webkit-animation-delay: -0.7s;\n          animation-delay: -0.7s;\n}\n@-webkit-keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n@keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n", ""]);
+exports.push([module.i, "\n.card[data-v-68ff5483] {\n  height: 75vh;\n}\n.card .messages[data-v-68ff5483] {\n    overflow: scroll;\n    height: calc(100% - 130px);\n}\n.message .text[data-v-68ff5483] {\n  border-radius: 6px;\n  display: inline-block;\n  padding: 7px 10px;\n}\n.message .them .text[data-v-68ff5483] {\n  background: #eaeaea;\n  max-width: 75%;\n}\n.message .them .text img[data-v-68ff5483] {\n    float: left;\n    max-width: 300px;\n}\n.message .me .text[data-v-68ff5483] {\n  background: #4e8cff;\n  color: white;\n}\n.message .list-element[data-v-68ff5483] {\n  display: inline-block;\n  width: 100%;\n  min-width: 150px;\n  border-bottom: 1px solid #999;\n  margin-bottom: .5rem;\n  padding-bottom: .25rem;\n}\n.message .list-element[data-v-68ff5483]:last-child {\n    border-bottom: none;\n    margin-bottom: 0;\n    padding-bottom: 0;\n}\n.message .list-element img[data-v-68ff5483] {\n    max-width: 100px !important;\n}\n.loading-indicator[data-v-68ff5483] {\n  text-align: center;\n  padding: 20px 0;\n}\n.loading-indicator span[data-v-68ff5483] {\n    display: inline-block;\n    background-color: #B6B5BA;\n    width: 11px;\n    height: 11px;\n    border-radius: 100%;\n    margin-right: 4px;\n    -webkit-animation: bob-data-v-68ff5483 2s infinite;\n            animation: bob-data-v-68ff5483 2s infinite;\n}\n.live-chat[data-v-68ff5483] {\n  width: 165px;\n  margin: auto;\n  height: 2.25rem;\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n  line-height: 2.25rem;\n  border-radius: .5rem;\n  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n}\n.live-chat#open[data-v-68ff5483] {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n.live-chat#closed[data-v-68ff5483] {\n  background-color: palevioletred;\n}\n.open-live-chat[data-v-68ff5483]:hover {\n  text-decoration: underline;\n}\n.user-name[data-v-68ff5483] {\n  color: grey;\n  font-size: smaller;\n}\n\n/* SAFARI GLITCH */\n.loading-indicator span[data-v-68ff5483]:nth-child(1) {\n  -webkit-animation-delay: -1s;\n          animation-delay: -1s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(2) {\n  -webkit-animation-delay: -0.85s;\n          animation-delay: -0.85s;\n}\n.loading-indicator span[data-v-68ff5483]:nth-child(3) {\n  -webkit-animation-delay: -0.7s;\n          animation-delay: -0.7s;\n}\n@-webkit-keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n@keyframes bob-data-v-68ff5483 {\n10% {\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    background-color: #9E9DA2;\n}\n50% {\n    -webkit-transform: translateY(0);\n            transform: translateY(0);\n    background-color: #B6B5BA;\n}\n}\n", ""]);
 
 // exports
 
@@ -1070,31 +1082,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns_format___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_date_fns_format__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns_parse__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns_parse___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_date_fns_parse__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_js_toggle_button_src_Button__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_js_toggle_button_src_Button__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_js_toggle_button_src_Button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_js_toggle_button_src_Button__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -1215,41 +1204,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             loading: false,
             messagesOffset: 0,
             messages: [],
-            contextLogs: [],
-            userInHandOverMode: false,
             userId: null
         };
     },
     mounted: function mounted() {
         this.userId = this.$route.params.user;
         this.fetchMessages(this.$route.params.user, 0);
-        this.fetchContextLog(this.$route.params.user);
-        this.isUserInHandOverMode(this.$route.params.user);
     },
 
     methods: {
-        fetchContextLog: function fetchContextLog(user) {
-            var _this = this;
-
-            window.axios.get("/admin/conversation-log/context-log/" + user).then(function (response) {
-                response.data.forEach(function (row) {
-                    _this.contextLogs.push(row);
-                });
-            });
-        },
         fetchMessages: function fetchMessages(user, offset) {
-            var _this2 = this;
+            var _this = this;
 
             this.loading = true;
 
             window.axios.get("/admin/conversation-log/conversation-log/" + user + "/" + offset).then(function (response) {
-                _this2.loading = false;
+                _this.loading = false;
 
                 response.data.forEach(function (message) {
-                    if (message.author !== _this2.userId) {
+                    if (message.author !== _this.userId) {
                         message.author = 'them';
                     }
-                    _this2.messages.push(message);
+                    _this.messages.push(message);
                 });
             });
         },
@@ -1267,13 +1243,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         openLiveChat: function openLiveChat() {
             window.open("/chat/" + this.$route.params.user, 'newwindow', 'width=500,height=500');
-        },
-        isUserInHandOverMode: function isUserInHandOverMode(user) {
-            var _this3 = this;
-
-            window.axios.get("/admin/conversation-log/is-in-hand-over-mode/" + user).then(function (response) {
-                _this3.userInHandOverMode = response.data == true;
-            });
         }
     }
 });
@@ -1283,11 +1252,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 var getDayOfYear = __webpack_require__(15)
-var getISOWeek = __webpack_require__(19)
+var getISOWeek = __webpack_require__(20)
 var getISOYear = __webpack_require__(6)
 var parse = __webpack_require__(0)
-var isValid = __webpack_require__(22)
-var enLocale = __webpack_require__(23)
+var isValid = __webpack_require__(23)
+var enLocale = __webpack_require__(24)
 
 /**
  * @category Common Helpers
@@ -1617,8 +1586,8 @@ module.exports = format
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfYear = __webpack_require__(16)
-var differenceInCalendarDays = __webpack_require__(17)
+var startOfYear = __webpack_require__(17)
+var differenceInCalendarDays = __webpack_require__(18)
 
 /**
  * @category Day Helpers
@@ -1647,6 +1616,33 @@ module.exports = getDayOfYear
 
 /***/ }),
 /* 16 */
+/***/ (function(module, exports) {
+
+var MILLISECONDS_IN_MINUTE = 60000
+
+/**
+ * Google Chrome as of 67.0.3396.87 introduced timezones with offset that includes seconds.
+ * They usually appear for dates that denote time before the timezones were introduced
+ * (e.g. for 'Europe/Prague' timezone the offset is GMT+00:57:44 before 1 October 1891
+ * and GMT+01:00:00 after that date)
+ *
+ * Date#getTimezoneOffset returns the offset in minutes and would return 57 for the example above,
+ * which would lead to incorrect calculations.
+ *
+ * This function returns the timezone offset in milliseconds that takes seconds in account.
+ */
+module.exports = function getTimezoneOffsetInMilliseconds (dirtyDate) {
+  var date = new Date(dirtyDate.getTime())
+  var baseTimezoneOffset = date.getTimezoneOffset()
+  date.setSeconds(0, 0)
+  var millisecondsPartOfTimezoneOffset = date.getTime() % MILLISECONDS_IN_MINUTE
+
+  return baseTimezoneOffset * MILLISECONDS_IN_MINUTE + millisecondsPartOfTimezoneOffset
+}
+
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -1679,10 +1675,10 @@ module.exports = startOfYear
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(18)
+var startOfDay = __webpack_require__(19)
 
 var MILLISECONDS_IN_MINUTE = 60000
 var MILLISECONDS_IN_DAY = 86400000
@@ -1726,7 +1722,7 @@ module.exports = differenceInCalendarDays
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -1757,12 +1753,12 @@ module.exports = startOfDay
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
 var startOfISOWeek = __webpack_require__(1)
-var startOfISOYear = __webpack_require__(21)
+var startOfISOYear = __webpack_require__(22)
 
 var MILLISECONDS_IN_WEEK = 604800000
 
@@ -1797,7 +1793,7 @@ module.exports = getISOWeek
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -1841,7 +1837,7 @@ module.exports = startOfWeek
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(6)
@@ -1879,7 +1875,7 @@ module.exports = startOfISOYear
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isDate = __webpack_require__(5)
@@ -1920,11 +1916,11 @@ module.exports = isValid
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(24)
-var buildFormatLocale = __webpack_require__(25)
+var buildDistanceInWordsLocale = __webpack_require__(25)
+var buildFormatLocale = __webpack_require__(26)
 
 /**
  * @category Locales
@@ -1937,7 +1933,7 @@ module.exports = {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2042,10 +2038,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(26)
+var buildFormattingTokensRegExp = __webpack_require__(27)
 
 function buildFormatLocale () {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -2136,7 +2132,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 var commonFormatterKeys = [
@@ -2170,19 +2166,19 @@ module.exports = buildFormattingTokensRegExp
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(28)
+  __webpack_require__(29)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(30)
+var __vue_script__ = __webpack_require__(31)
 /* template */
-var __vue_template__ = __webpack_require__(31)
+var __vue_template__ = __webpack_require__(32)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2221,13 +2217,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(29);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -2247,7 +2243,7 @@ if(false) {
 }
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -2255,13 +2251,13 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.vue-js-switch[data-v-f5d135b2] {\n  display: inline-block;\n  position: relative;\n  overflow: hidden;\n  vertical-align: middle;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  font-size: 10px;\n  cursor: pointer;\n}\n.vue-js-switch .v-switch-input[data-v-f5d135b2] {\n    display: none;\n}\n.vue-js-switch .v-switch-label[data-v-f5d135b2] {\n    position: absolute;\n    top: 0;\n    font-weight: 600;\n    color: white;\n}\n.vue-js-switch .v-switch-label.v-left[data-v-f5d135b2] {\n      left: 10px;\n}\n.vue-js-switch .v-switch-label.v-right[data-v-f5d135b2] {\n      right: 10px;\n}\n.vue-js-switch .v-switch-core[data-v-f5d135b2] {\n    display: block;\n    position: relative;\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    outline: 0;\n    margin: 0;\n    -webkit-transition: border-color .3s, background-color .3s;\n    transition: border-color .3s, background-color .3s;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.vue-js-switch .v-switch-core .v-switch-button[data-v-f5d135b2] {\n      display: block;\n      position: absolute;\n      overflow: hidden;\n      top: 0;\n      left: 0;\n      -webkit-transform: translate3d(3px, 3px, 0);\n              transform: translate3d(3px, 3px, 0);\n      border-radius: 100%;\n      background-color: #fff;\n}\n.vue-js-switch.disabled[data-v-f5d135b2] {\n    pointer-events: none;\n    opacity: 0.6;\n}\n", ""]);
+exports.push([module.i, "\n.vue-js-switch[data-v-f5d135b2] {\n  display: inline-block;\n  position: relative;\n  vertical-align: middle;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  font-size: 10px;\n  cursor: pointer;\n}\n.vue-js-switch .v-switch-input[data-v-f5d135b2] {\n    opacity: 0;\n    position: absolute;\n    width: 1px;\n    height: 1px;\n}\n.vue-js-switch .v-switch-label[data-v-f5d135b2] {\n    position: absolute;\n    top: 0;\n    font-weight: 600;\n    color: white;\n    z-index: 1;\n}\n.vue-js-switch .v-switch-label.v-left[data-v-f5d135b2] {\n      left: 10px;\n}\n.vue-js-switch .v-switch-label.v-right[data-v-f5d135b2] {\n      right: 10px;\n}\n.vue-js-switch .v-switch-core[data-v-f5d135b2] {\n    display: block;\n    position: relative;\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    outline: 0;\n    margin: 0;\n    -webkit-transition: border-color .3s, background-color .3s;\n    transition: border-color .3s, background-color .3s;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.vue-js-switch .v-switch-core .v-switch-button[data-v-f5d135b2] {\n      display: block;\n      position: absolute;\n      overflow: hidden;\n      top: 0;\n      left: 0;\n      border-radius: 100%;\n      background-color: #fff;\n      z-index: 2;\n}\n.vue-js-switch.disabled[data-v-f5d135b2] {\n    pointer-events: none;\n    opacity: 0.6;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2294,18 +2290,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-var constants = {
-  colorChecked: '#75C791',
-  colorUnchecked: '#bfcbd9',
-  cssColors: false,
-  labelChecked: 'on',
-  labelUnchecked: 'off',
-  width: 50,
-  height: 22,
-  margin: 3,
-  switchColor: '#fff'
-};
+var DEFAULT_COLOR_CHECKED = '#75c791';
+var DEFAULT_COLOR_UNCHECKED = '#bfcbd9';
+var DEFAULT_LABEL_CHECKED = 'on';
+var DEFAULT_LABEL_UNCHECKED = 'off';
+var DEFAULT_SWITCH_COLOR = '#fff';
 
 var contains = function contains(object, title) {
   return (typeof object === 'undefined' ? 'undefined' : _typeof(object)) === 'object' && object.hasOwnProperty(title);
@@ -2315,6 +2321,12 @@ var px = function px(v) {
   return v + 'px';
 };
 
+var translate3d = function translate3d(x, y) {
+  var z = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '0px';
+
+  return 'translate3d(' + x + ', ' + y + ', ' + z + ')';
+};
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ToggleButton',
   props: {
@@ -2322,12 +2334,12 @@ var px = function px(v) {
       type: Boolean,
       default: false
     },
+    name: {
+      type: String
+    },
     disabled: {
       type: Boolean,
       default: false
-    },
-    name: {
-      type: String
     },
     sync: {
       type: Boolean,
@@ -2340,7 +2352,7 @@ var px = function px(v) {
     color: {
       type: [String, Object],
       validator: function validator(value) {
-        return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' ? value.checked || value.unchecked : typeof value === 'string';
+        return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' ? value.checked || value.unchecked || value.disabled : typeof value === 'string';
       }
     },
     switchColor: {
@@ -2362,11 +2374,18 @@ var px = function px(v) {
     },
     height: {
       type: Number,
-      default: constants.height
+      default: 22
     },
     width: {
       type: Number,
-      default: constants.width
+      default: 50
+    },
+    margin: {
+      type: Number,
+      default: 3
+    },
+    fontSize: {
+      type: Number
     }
   },
   computed: {
@@ -2377,9 +2396,6 @@ var px = function px(v) {
 
       return ['vue-js-switch', { toggled: toggled, disabled: disabled }];
     },
-    ariaChecked: function ariaChecked() {
-      return this.toggled.toString();
-    },
     coreStyle: function coreStyle() {
       return {
         width: px(this.width),
@@ -2389,23 +2405,31 @@ var px = function px(v) {
       };
     },
     buttonRadius: function buttonRadius() {
-      return this.height - constants.margin * 2;
+      return this.height - this.margin * 2;
     },
     distance: function distance() {
-      return px(this.width - this.height + constants.margin);
+      return px(this.width - this.height + this.margin);
     },
     buttonStyle: function buttonStyle() {
+      var transition = 'transform ' + this.speed + 'ms';
+      var margin = px(this.margin);
+
+      var transform = this.toggled ? translate3d(this.distance, margin) : translate3d(margin, margin);
+
+      var background = this.switchColor ? this.switchColorCurrent : null;
+
       return {
         width: px(this.buttonRadius),
         height: px(this.buttonRadius),
-        transition: 'transform ' + this.speed + 'ms',
-        transform: this.toggled ? 'translate3d(' + this.distance + ', 3px, 0px)' : null,
-        background: this.switchColor ? this.switchColorCurrent : undefined
+        transition: transition,
+        transform: transform,
+        background: background
       };
     },
     labelStyle: function labelStyle() {
       return {
-        lineHeight: px(this.height)
+        lineHeight: px(this.height),
+        fontSize: this.fontSize ? px(this.fontSize) : null
       };
     },
     colorChecked: function colorChecked() {
@@ -2413,16 +2437,16 @@ var px = function px(v) {
 
 
       if ((typeof color === 'undefined' ? 'undefined' : _typeof(color)) !== 'object') {
-        return color || constants.colorChecked;
+        return color || DEFAULT_COLOR_CHECKED;
       }
 
-      return contains(color, 'checked') ? color.checked : constants.colorChecked;
+      return contains(color, 'checked') ? color.checked : DEFAULT_COLOR_CHECKED;
     },
     colorUnchecked: function colorUnchecked() {
       var color = this.color;
 
 
-      return contains(color, 'unchecked') ? color.unchecked : constants.colorUnchecked;
+      return contains(color, 'unchecked') ? color.unchecked : DEFAULT_COLOR_UNCHECKED;
     },
     colorDisabled: function colorDisabled() {
       var color = this.color;
@@ -2434,29 +2458,35 @@ var px = function px(v) {
       return this.toggled ? this.colorChecked : this.colorUnchecked;
     },
     labelChecked: function labelChecked() {
-      return contains(this.labels, 'checked') ? this.labels.checked : constants.labelChecked;
+      var labels = this.labels;
+
+
+      return contains(labels, 'checked') ? labels.checked : DEFAULT_LABEL_CHECKED;
     },
     labelUnchecked: function labelUnchecked() {
-      return contains(this.labels, 'unchecked') ? this.labels.unchecked : constants.labelUnchecked;
+      var labels = this.labels;
+
+
+      return contains(labels, 'unchecked') ? labels.unchecked : DEFAULT_LABEL_UNCHECKED;
     },
     switchColorChecked: function switchColorChecked() {
       var switchColor = this.switchColor;
 
 
-      return contains(switchColor, 'checked') ? switchColor.checked : constants.switchColor;
+      return contains(switchColor, 'checked') ? switchColor.checked : DEFAULT_SWITCH_COLOR;
     },
     switchColorUnchecked: function switchColorUnchecked() {
       var switchColor = this.switchColor;
 
 
-      return contains(switchColor, 'unchecked') ? switchColor.unchecked : constants.switchColor;
+      return contains(switchColor, 'unchecked') ? switchColor.unchecked : DEFAULT_SWITCH_COLOR;
     },
     switchColorCurrent: function switchColorCurrent() {
       var switchColor = this.switchColor;
 
 
       if ((typeof switchColor === 'undefined' ? 'undefined' : _typeof(switchColor)) !== 'object') {
-        return switchColor || constants.switchColor;
+        return switchColor || DEFAULT_SWITCH_COLOR;
       }
 
       return this.toggled ? this.switchColorChecked : this.switchColorUnchecked;
@@ -2488,7 +2518,7 @@ var px = function px(v) {
 });
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2497,14 +2527,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "label",
-    {
-      class: _vm.className,
-      attrs: { role: "checkbox", "aria-checked": _vm.ariaChecked }
-    },
+    { class: _vm.className },
     [
       _c("input", {
         staticClass: "v-switch-input",
-        attrs: { type: "checkbox", name: _vm.name },
+        attrs: { type: "checkbox", name: _vm.name, disabled: _vm.disabled },
+        domProps: { checked: _vm.value },
         on: {
           change: function($event) {
             $event.stopPropagation()
@@ -2520,16 +2548,24 @@ var render = function() {
       _vm.labels
         ? [
             _vm.toggled
-              ? _c("span", {
-                  staticClass: "v-switch-label v-left",
-                  style: _vm.labelStyle,
-                  domProps: { innerHTML: _vm._s(_vm.labelChecked) }
-                })
-              : _c("span", {
-                  staticClass: "v-switch-label v-right",
-                  style: _vm.labelStyle,
-                  domProps: { innerHTML: _vm._s(_vm.labelUnchecked) }
-                })
+              ? _c(
+                  "span",
+                  {
+                    staticClass: "v-switch-label v-left",
+                    style: _vm.labelStyle
+                  },
+                  [_vm._t("checked", [[_vm._v(_vm._s(_vm.labelChecked))]])],
+                  2
+                )
+              : _c(
+                  "span",
+                  {
+                    staticClass: "v-switch-label v-right",
+                    style: _vm.labelStyle
+                  },
+                  [_vm._t("unchecked", [[_vm._v(_vm._s(_vm.labelUnchecked))]])],
+                  2
+                )
           ]
         : _vm._e()
     ],
@@ -2547,7 +2583,7 @@ if (false) {
 }
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2591,34 +2627,6 @@ var render = function() {
             ],
             1
           ),
-          _vm._v(" "),
-          _vm.userInHandOverMode
-            ? _c("div", { staticClass: "clearfix mb-6" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "live-chat",
-                    attrs: { id: "open" },
-                    on: { click: _vm.openLiveChat }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    Open Live Chat\n                "
-                    )
-                  ]
-                )
-              ])
-            : _c("div", { staticClass: "clearfix mb-6" }, [
-                _c(
-                  "div",
-                  { staticClass: "live-chat", attrs: { id: "closed" } },
-                  [
-                    _vm._v(
-                      "\n                    User Not Online\n                "
-                    )
-                  ]
-                )
-              ]),
           _vm._v(" "),
           _c("div", { staticClass: "clearfix mb-4" }, [
             _c("div", { staticClass: "float-left" }, [
@@ -2860,7 +2868,8 @@ var render = function() {
                                           ],
                                           2
                                         )
-                                      })
+                                      }),
+                                      0
                                     )
                                   ]
                                 : [
@@ -2932,40 +2941,6 @@ var render = function() {
         ])
       ],
       1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "px-3 mb-6 w-1/3" },
-      [
-        _c(
-          "card",
-          { staticClass: "p-4" },
-          [
-            _c("heading", { staticClass: "mb-6" }, [_vm._v("Context Log")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "context-log" },
-              _vm._l(_vm.contextLogs, function(row) {
-                return _c("div", [
-                  _c("div", { staticClass: "mb-2" }, [
-                    _vm._v(
-                      _vm._s(row.created_at) +
-                        ": " +
-                        _vm._s(row.data_type) +
-                        ": " +
-                        _vm._s(row.value)
-                    )
-                  ])
-                ])
-              })
-            )
-          ],
-          1
-        )
-      ],
-      1
     )
   ])
 }
@@ -2980,7 +2955,7 @@ if (false) {
 }
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -11,17 +11,6 @@
                     </div>
                 </div>
 
-                <div class="clearfix mb-6" v-if="userInHandOverMode">
-                    <div @click="openLiveChat" id="open" class="live-chat">
-                        Open Live Chat
-                    </div>
-                </div>
-                <div class="clearfix mb-6" v-else>
-                    <div id="closed" class="live-chat">
-                        User Not Online
-                    </div>
-                </div>
-
                 <div class="clearfix mb-4">
                     <div class="float-left"><b>Bot</b></div>
                     <div class="float-right"><b>User</b></div>
@@ -110,18 +99,6 @@
                 </div>
             </card>
         </div>
-
-        <div class="px-3 mb-6 w-1/3">
-            <card class="p-4">
-                <heading class="mb-6">Context Log</heading>
-
-                <div class="context-log">
-                    <div v-for="row in contextLogs">
-                        <div class="mb-2">{{ row.created_at }}: {{ row.data_type }}: {{ row.value }}</div>
-                    </div>
-                </div>
-            </card>
-        </div>
     </div>
 </template>
 
@@ -141,27 +118,14 @@
             loading: false,
             messagesOffset: 0,
             messages: [],
-            contextLogs: [],
-            userInHandOverMode: false,
             userId: null
         };
     },
     mounted() {
         this.userId = this.$route.params.user;
         this.fetchMessages(this.$route.params.user, 0);
-        this.fetchContextLog(this.$route.params.user);
-        this.isUserInHandOverMode(this.$route.params.user)
     },
     methods: {
-        fetchContextLog(user) {
-            window.axios
-                .get(`/admin/conversation-log/context-log/${user}`)
-                .then(response => {
-                    response.data.forEach(row => {
-                        this.contextLogs.push(row);
-                    });
-                });
-        },
         fetchMessages(user, offset) {
             this.loading = true;
 
@@ -194,13 +158,6 @@
         openLiveChat() {
             window.open("/chat/" + this.$route.params.user, 'newwindow', 'width=500,height=500');
         },
-        isUserInHandOverMode(user) {
-            window.axios
-                .get(`/admin/conversation-log/is-in-hand-over-mode/${user}`)
-                .then(response => {
-                    this.userInHandOverMode = response.data == true;
-                });
-        }
     }
 }
 </script>
@@ -212,11 +169,6 @@
     .messages {
         overflow: scroll;
         height: calc(100% - 130px);
-    }
-
-    .context-log {
-        overflow: scroll;
-        height: calc(100% - 50px);
     }
 }
 
