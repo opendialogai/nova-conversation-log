@@ -1,6 +1,6 @@
 {
-    "name": "greenshootlabs/nova-conversation-log",
-    "description": "Laravel package",
+    "name": "opendialogai/nova-conversation-log",
+    "description": "Nova conversation log Tool",
     "type": "library",
     "require": {
         "php": "^7.1.3",
