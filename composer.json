@@ -1,5 +1,5 @@
 {
-    "name": "greenshootlabs/nova-conversation-log",
+    "name": "opendialogai/nova-conversation-log",
     "description": "Laravel package",
     "type": "library",
     "require": {
