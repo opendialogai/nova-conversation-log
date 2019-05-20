@@ -1,6 +1,6 @@
 {
     "name": "opendialogai/nova-conversation-log",
-    "description": "Nova conversation log Tool",
+    "description": "Laravel Nova Conversation Log Tool package",
     "type": "library",
     "require": {
         "php": "^7.1.3",
